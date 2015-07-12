@@ -68,7 +68,7 @@ class Game {
 			exit(1);
 		}
 
-		Pattern proccess(string unprocessedInputs){
+		Pattern process(string unprocessedInputs){
 			vector<Pattern> patternSet;
 			if(!potentialPattern.empty()){
 				patternSet = potentialPattern;
@@ -202,11 +202,9 @@ class Game {
 				/* if unprocessedInputs is same with any pattern, go to nextletter */
 				/* cout << endl << "potentialPattern: " << calcuPotentialPatternNum(unprocessedInputs) << endl; */
 				if(calcuPotentialPatternNum(unprocessedInputs) == 0){
-					/* cout << "calcuPotentialPatternNum(unprocessedInputs) = " << calcuPotentialPatternNum(unprocessedInputs) << endl; */
-					/* cout << "calcuPotentialPatternNum(unprocessedInputs,1) = " << calcuPotentialPatternNum(unprocessedInputs,1) << endl; */
 					if(calcuPotentialPatternNum(unprocessedInputs,1) == 1){
 						/* cout << "processing n" << endl; */
-						Pattern selectedPattern = proccess(unprocessedInputs.substr(0,unprocessedInputs.size()-1));
+						Pattern selectedPattern = process(unprocessedInputs.substr(0,unprocessedInputs.size()-1));
 						vector<string> carryKana;
 						carryKana = selectedPattern.getObjective();
 						string storeInput = unprocessedInputs;
@@ -246,8 +244,6 @@ class Game {
 						}
 					}
 				}
-
-
 
 			}
 		}
