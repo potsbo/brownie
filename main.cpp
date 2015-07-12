@@ -181,12 +181,6 @@ class Game {
 				}
 
 				validInputList.insert(validInputList.end(), anotherList.begin(), anotherList.end());
-				/* cout << "validInputList:"; */
-				/* for( char c : validInputList){ */
-				/* 	printf("%d,",c); */
-				/* } */
-				/* cout <<":" << validInputList.size() << endl; */
-
 
 				/* check valid inputs */
 				if(validInputList.empty()){
