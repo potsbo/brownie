@@ -11,6 +11,8 @@
 using namespace std;
 
 const std::string VERSION = "0.01";
+const std::string TABLE_FILE_PREFIX = "./tables/";
+const std::string OBJECTIVE_FILE_PREFIX= "./objectives/";
 bool debugFlag = false;
 
 template<typename T_TYPE>
@@ -249,13 +251,15 @@ class Game {
 		}
 
 	public:
-		Game(string sourceFile = "./googleNihongoRomajiTable", string objectiveFile = "./objective"){
-			romajiTable.set(sourceFile);
+		Game(string tableFile = "googleNihongoRomajiTable", string objectiveFile = "default"){
+			tableFile = TABLE_FILE_PREFIX + tableFile;
+			romajiTable.set(tableFile);
 			cout << "ローマ字テーブル読み込み完了" << endl;
 
+			objectiveFile = OBJECTIVE_FILE_PREFIX + objectiveFile;
 			std::ifstream ifs(objectiveFile);
 			if (ifs.fail()){
-				std::cerr << "失敗" << std::endl;
+				std::cerr << objectiveFile << " の読み込みに失敗" << std::endl;
 				exit(1);
 			}
 			string line;
@@ -266,8 +270,8 @@ class Game {
 		}
 		void run(){
 			for(int i = 0; i < loop; i++){
-				int objectiveSize = objectiveList.size();
-				string objective = objectiveList[rand() % objectiveSize];
+				int objectiveListSize = objectiveList.size();
+				string objective = objectiveList[rand() % objectiveListSize];
 
 				cout << "Type " << objective << endl;
 				cout << " " << objective << endl;
