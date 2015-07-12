@@ -151,11 +151,6 @@ class Game {
 				}
 
 				vector<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
-				/* cout << "validInputList:"; */
-				/* for( char c : validInputList){ */
-					/* printf("%c,",c); */
-				/* } */
-				/* cout <<":" << validInputList.size() << endl; */
 
 				int cnt = 0;
 				Pattern processablePat;
@@ -196,7 +191,6 @@ class Game {
 					cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 
 				/* if unprocessedInputs is same with any pattern, go to nextletter */
-				/* cout << endl << "potentialPattern: " << calcuPotentialPatternNum(unprocessedInputs) << endl; */
 				if(calcuPotentialPatternNum(unprocessedInputs) == 0){
 					if(calcuPotentialPatternNum(unprocessedInputs,1) == 1){
 						/* cout << "processing n" << endl; */
