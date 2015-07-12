@@ -140,7 +140,7 @@ class RomajiTable {
 		std::vector<PatternsForAKana> analysedPatterns;
 		std::vector<Pattern> allPatterns;
 	public:
-		void set(std::string sourceFile = "./googleNihongoRomajiTable"){
+		void set(std::string sourceFile = "googleNihongoRomajiTable"){
 			std::string tableString;
 			if( sourceFile == ""){ 
 				/* create table with ascii code */
