@@ -89,10 +89,13 @@ class Game {
 			exit(1);
 		}
 
-		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = 0){
-			if(unuseInput > unprocessedInputs.size()){
-				exit(1);
-			}
+		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = -1){
+			/* cout  << "unuseInput = " << unuseInput << endl; */
+			/* cout  << "unprocessedInputs.size() = " << unprocessedInputs.size() << endl; */
+			/* TODO why this is error */
+			/* if(unuseInput > unprocessedInputs.size()){ */
+			/* 	exit(1); */
+			/* } */
 
 			if(unuseInput > 0)
 				unprocessedInputs = unprocessedInputs.substr(0, unprocessedInputs.size() - unuseInput);
@@ -108,7 +111,7 @@ class Game {
 				cout << endl << "(in calcuPotentialPatternNum())unprocessedInputs = " << unprocessedInputs << endl;
 
 			int patternNum = 0;
-			if(unuseInput == 0){
+			if(unuseInput == -1){
 				for(Pattern pat : patternSet)
 					patternNum += (int)prefixMatch<string>(unprocessedInputs, pat.getStroke());
 			}else{
@@ -166,6 +169,7 @@ class Game {
 				cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 				exit(1);
 			}
+			validInputList.erase('\0');
 			return validInputList;
 		}
 
@@ -187,11 +191,16 @@ class Game {
 				}
 
 				set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
-
-				/* loop until getting valid input */
-				unprocessedInputs += waitForValidInput(validInputList);
+				/* cout << "validInputList.size() = " << validInputList.size() << endl; */
+				if(validInputList.size() == 1 && validInputList.find(' ') != validInputList.end()){
+					unprocessedInputs += ' ';
+				}else{
+					/* loop until getting valid input */
+					unprocessedInputs += waitForValidInput(validInputList);
+				}
 				if(debugFlag)
 					cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
+
 
 				/* if unprocessedInputs is same with any pattern, go to nextletter */
 				if(calcuPotentialPatternNum(unprocessedInputs) == 0){
