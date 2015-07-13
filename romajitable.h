@@ -117,7 +117,6 @@ class CandidatePattern {
 		void onlyCompatibleWithCurrentInput(std::string currentInput){
 			std::vector<Pattern>::iterator itr = pats.begin();
 			while (itr != pats.end()) {
-				cout << "hello" << endl;
 				if(!(*itr).isCompatibleWithCurrentInput(currentInput)) {
 					itr = pats.erase(itr);
 				}else {
