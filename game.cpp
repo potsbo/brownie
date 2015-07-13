@@ -33,9 +33,7 @@ char Game::waitForValidInput(set<char> validInputList){
 }
 
 Pattern Game::getProcessablePattern(string unprocessedInputs){
-	vector<Pattern> patternSet;
-	patternSet = romajiTable.getAllPattern();
-	for(Pattern pat : patternSet)
+	for(Pattern pat : romajiTable.getAllPattern())
 		if(unprocessedInputs == pat.getStroke())
 			return pat;
 
@@ -48,20 +46,16 @@ int Game::calcuPotentialPatternNum(string unprocessedInputs, int unuseInput){
 	if(unuseInput > 0)
 		unprocessedInputs = unprocessedInputs.substr(0, unprocessedInputs.size() - unuseInput);
 
-	vector<Pattern> patternSet;
-	patternSet = romajiTable.getAllPattern();
 	if(debugFlag && unuseInput > 0)
 		cout << endl << "(in calcuPotentialPatternNum())unprocessedInputs = " << unprocessedInputs << endl;
 
 	int patternNum = 0;
 	if(unuseInput == -1){
-		for(Pattern pat : patternSet)
+		for(Pattern pat : romajiTable.getAllPattern())
 			patternNum += (int)prefixMatch<string>(unprocessedInputs, pat.getStroke());
 	}else{
-		for(Pattern pat : patternSet){
-			/* cout << unprocessedInputs << " == " << pat.getStroke() << "?)" <<endl; */
+		for(Pattern pat : romajiTable.getAllPattern()){
 			patternNum += (int)(unprocessedInputs == pat.getStroke());
-			/* (pat.getStroke() == unprocessedInputs); */
 		}
 	}
 
@@ -88,8 +82,7 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 	set<char> anotherList;
 	if(cnt == 1){
 		string stroke = processablePat.getStroke();
-		string output = processablePat.getOutput();
-		std::vector<string> kana = processablePat.getObjective();
+		vector<string> kana = processablePat.getObjective();
 		string potentialInput;
 		for(int i = stroke.size(); i < unprocessedInputs.size(); i++){
 			potentialInput += unprocessedInputs[i];
@@ -101,9 +94,8 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 	validInputList = Union(validInputList, anotherList);
 	if(debugFlag){
 		cout << "validInputList: [";
-		for(char c : validInputList){
+		for(char c : validInputList)
 			cout << c;
-		}
 		cout << "]" << endl;
 	}
 	/* check valid inputs */
@@ -112,6 +104,7 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 		cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 		exit(1);
 	}
+
 	validInputList.erase('\0');
 	return validInputList;
 }
@@ -160,7 +153,6 @@ void Game::typeStringChallenge(StringJ objective){
 				process(&unprocessedInputs, &index,1);
 			}
 		}
-
 
 	}
 }
