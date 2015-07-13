@@ -43,6 +43,7 @@ class Game {
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
 		vector<Pattern> potentialPattern;
+		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 
 		char waitForValidInput(set<char> validInputList = set<char>()){
 			/* cout << "now you can type" << endl; */
@@ -272,7 +273,13 @@ class Game {
 		void run(){
 			for(int i = 0; i < loop; i++){
 				int objectiveListSize = objectiveList.size();
-				string objective = objectiveList[rand() % objectiveListSize];
+				string objective;
+				if(seqFlag){
+					loop = objectiveList.size();
+					objective = objectiveList[i];
+				}else{
+					objective = objectiveList[rand() % objectiveListSize];
+				}
 
 				cout << "Type " << objective << endl;
 				cout << " " << objective << endl;
@@ -285,6 +292,9 @@ class Game {
 			vector<string> newList= split(newObjective,'\n');
 			objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
 		}
+		void setSeq(bool flag){
+			seqFlag = flag;
+		}
 
 };
 
@@ -292,7 +302,9 @@ int main(int argc, char *argv[]) {
 	cmdline::parser a;
 	a.add("debug", 'd', "debagFlag = true に設定します。");
 	a.add<string>("table", 't', "ローマ字テーブルファイル名", false, "./googleNihongoRomajiTable");
+	a.add("sequence", 's', "文字列を順に表示(デフォルトはランダム)");
 	a.parse_check(argc, argv);
+
 	debugFlag = a.exist("debug");
 
 	srand(time(NULL));
@@ -302,6 +314,7 @@ int main(int argc, char *argv[]) {
 	string sourceFile = a.get<string>("table");
 
 	Game newGame(sourceFile);
+	newGame.setSeq(a.exist("sequence"));
 	newGame.run();
 	cout << "You have done!";
 
