@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include <set>
 using namespace std;
-// デバグ用プリント
-void Print(set<int>& rseti) {
-	for (set<int>::iterator iti = rseti.begin(); iti != rseti.end(); iti++) { printf("%3d ", *iti); }
-	printf("\n");
-}
 // 和集合の計算
 template<typename T> 
 set<T> Union(set<T>& rsettA, set<T>&rsettB) {

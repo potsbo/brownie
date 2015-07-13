@@ -150,15 +150,18 @@ class RomajiTable {
 	private:
 		std::vector<PatternsForAKana> analysedPatterns;
 		std::vector<Pattern> allPatterns;
+
 	public:
 		void set(std::string sourceFile = "googleNihongoRomajiTable"){
 			std::string tableString;
-			if( sourceFile == ""){ 
+			std::vector<Pattern> uniquePatterns;
+			cout << sourceFile << endl;
+			if( sourceFile == "./tables/ascii" ){ 
 				/* create table with ascii code */
 				int startPoint = 32;
 				int endPoint = 127;
 				for(int i = startPoint; i < endPoint; i++){
-					analysedPatterns.push_back(Pattern(i,i));
+					uniquePatterns.push_back(Pattern(i,i));
 				}
 			}else{
 				std::ifstream ifs(sourceFile);
@@ -166,8 +169,6 @@ class RomajiTable {
 					std::cerr << "失敗" << std::endl;
 					exit(1);
 				}
-
-				std::vector<Pattern> uniquePatterns;
 				std::string line;
 				while (getline(ifs, line)){
 					Pattern newPattern(line);
@@ -182,29 +183,29 @@ class RomajiTable {
 					}
 					uniquePatterns.push_back(newPattern);
 				}
-				Pattern sentinel(" \t ");
-				uniquePatterns.push_back(sentinel);
+			Pattern sentinel(" \t ");
+			uniquePatterns.push_back(sentinel);
+			}
 
 
-				if(debugFlag)
-					std::cout << "uniquePatterns.size() = " << uniquePatterns.size() << std::endl;
-				allPatterns = uniquePatterns;
+			if(debugFlag)
+				std::cout << "uniquePatterns.size() = " << uniquePatterns.size() << std::endl;
+			allPatterns = uniquePatterns;
 
-				for(Pattern newPattern : uniquePatterns){
-					/* std::cout << "uniquePatterns loop..." << std::endl; */
-					/* search a kana */
-					bool found = false;
-					for(int i = 0; i < analysedPatterns.size(); i++){
-						if(analysedPatterns[i].canHold(newPattern)){
-							/* cout << "hello in for loop" << endl; */
-							analysedPatterns[i].add(newPattern);
-							found = true;
-							break;
-						}
+			for(Pattern newPattern : uniquePatterns){
+				/* std::cout << "uniquePatterns loop..." << std::endl; */
+				/* search a kana */
+				bool found = false;
+				for(int i = 0; i < analysedPatterns.size(); i++){
+					if(analysedPatterns[i].canHold(newPattern)){
+						/* cout << "hello in for loop" << endl; */
+						analysedPatterns[i].add(newPattern);
+						found = true;
+						break;
 					}
-					if(!found){
-						analysedPatterns.push_back(newPattern);
-					}
+				}
+				if(!found){
+					analysedPatterns.push_back(newPattern);
 				}
 			}
 			if(debugFlag)

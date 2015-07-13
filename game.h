@@ -3,8 +3,6 @@
 #include <algorithm> 
 #include <fstream>
 #include <set>
-#include <sstream>
-
 #include "set.h"
 #include "pattern.h"
 #include "romajitable.h"
@@ -192,7 +190,7 @@ class Game {
 
 				set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
 				/* cout << "validInputList.size() = " << validInputList.size() << endl; */
-				if(validInputList.size() == 1 && validInputList.find(' ') != validInputList.end()){
+				if(index==objective.size()-2 && validInputList.size()==1 && validInputList.find(' ') != validInputList.end()){
 					unprocessedInputs += ' ';
 				}else{
 					/* loop until getting valid input */
@@ -262,6 +260,7 @@ class Game {
 				std::cerr << objectiveFile << " の読み込みに失敗" << std::endl;
 				exit(1);
 			}
+
 			string line;
 			while (getline(ifs, line)){
 				addObjective(line + " ");
@@ -281,7 +280,7 @@ class Game {
 				}
 
 				cout << "Type " << objective << endl;
-				cout << " " << objective << endl;
+				cout << objective << endl;
 				typeStringChallenge(objective);
 				cout <<  endl << "Done " << i+1 << " of " << loop << endl;
 			}
