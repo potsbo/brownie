@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <set>
+#include <algorithm> 
+#include "set.h"
 #include "stringJ.h"
 #include "keyboard.h"
 #include "cmdline.h"
@@ -41,7 +44,7 @@ class Game {
 		vector<string> objectiveList;
 		vector<Pattern> potentialPattern;
 
-		char waitForValidInput(vector<char> validInputList = vector<char>()){
+		char waitForValidInput(set<char> validInputList = set<char>()){
 			/* cout << "now you can type" << endl; */
 			bool valid = false;
 			cout << " "; // place holder
@@ -119,12 +122,12 @@ class Game {
 			return patternNum;
 		}
 
-		vector<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs){
+		set<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs){
 			string objectiveKana = objective.nthUnicodeLetter(index);
 			candidatePat.reset(romajiTable.firstCandidate(objectiveKana).getPatterns());
 			candidatePat.onlyCompatibleWithCurrentInput(unprocessedInputs);
 			candidatePat.onlyCompatibleWithNextKanas(objective, index, romajiTable.getAllPattern());
-			vector<char> validInputList = candidatePat.getValidInput(unprocessedInputs);
+			set<char> validInputList = candidatePat.getValidInput(unprocessedInputs);
 
 			int cnt = 0;
 			Pattern processablePat;
@@ -136,7 +139,7 @@ class Game {
 						break;
 				}
 			}
-			vector<char> anotherList;
+			set<char> anotherList;
 			if(cnt == 1){
 				string stroke = processablePat.getStroke();
 				string output = processablePat.getOutput();
@@ -146,17 +149,22 @@ class Game {
 					potentialInput += unprocessedInputs[i];
 				}
 				anotherList = makeValidInputList(objective, index+kana.size(), potentialInput);
+				/* TODO check infinite loop */
 			}
 
-			validInputList.insert(validInputList.end(), anotherList.begin(), anotherList.end());
+			validInputList = Union(validInputList, anotherList);
+			if(debugFlag){
+				cout << "validInputList: [";
+				for(char c : validInputList){
+					cout << c;
+				}
+				cout << "]" << endl;
+			}
 			/* check valid inputs */
 			if(validInputList.empty()){
 				cout << "No valid input for objectiveKana " << objectiveKana;
 				cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 				exit(1);
-			}
-			for(char c : validInputList){
-				cout << c;
 			}
 			return validInputList;
 		}
@@ -177,7 +185,7 @@ class Game {
 					cout << "unprocessedInputs: " << unprocessedInputs << endl;
 				}
 
-				vector<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
+				set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
 
 				/* loop until getting valid input */
 				unprocessedInputs += waitForValidInput(validInputList);

@@ -91,8 +91,6 @@ class CandidatePattern {
 		}
 
 		void onlyCompatibleWithNextKanas(StringJ objective, int index, std::vector<Pattern> allPatterns){
-			std::cout << pats.size();
-
 			std::vector<char> requiredAlphabet;
 			std::vector<Pattern>::iterator itr = pats.begin();
 			while (itr != pats.end()) {
@@ -134,13 +132,18 @@ class CandidatePattern {
 		}
 		
 		/* this is safe to use after you call onlyCompatibleWithCurrentInput and onlyCompatibleWithNextLetter */
-		std::vector<char> getValidInput(std::string unprocessedInputs){
+		std::set<char> getValidInput(std::string unprocessedInputs){
 			if(debugFlag)
-			for(Pattern pat : pats){
-				std::cout << pat.getStroke() << std::endl;
+				for(Pattern pat : pats){
+					std::cout << pat.getStroke() << std::endl;
+				}
+			std::vector<char> validInputList = getNthStrokes(unprocessedInputs.size());
+			std::set<char> validInputSet;
+			for(char c : validInputList){
+				validInputSet.insert(c);
 			}
-			return getNthStrokes(unprocessedInputs.size());
 			/* TODO exclude \0 */
+			return validInputSet;
 		}
 };
 
