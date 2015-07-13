@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	cout << "Brownie ver. " << VERSION << endl;
 
-	/* TODO set with getopt */
 	string sourceFile = a.get<string>("table");
 
 	Game newGame(sourceFile);
