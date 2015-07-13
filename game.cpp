@@ -1,24 +1,7 @@
 #include "game.h"
+#include "match.h"
 const std::string TABLE_FILE_PREFIX = "./tables/";
 const std::string OBJECTIVE_FILE_PREFIX= "./objectives/";
-
-template<typename T_TYPE>
-bool prefixMatch(T_TYPE prefix, T_TYPE objective){
-	if(prefix.size() > objective.size()){
-		return false;
-	}
-
-	bool found = true;
-
-	for(int i = 0; i < prefix.size(); i++){
-		if(prefix[i] != objective[i]){
-			found = false;
-			break;
-		}
-	}
-
-	return found;
-}
 
 char Game::waitForValidInput(set<char> validInputList){
 	/* cout << "now you can type" << endl; */
