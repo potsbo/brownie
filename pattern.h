@@ -64,7 +64,7 @@ class Pattern {
 			}
 		}
 		bool isCompatibleWithCurrentInput(std::string currentInput){
-			for(int i; i < currentInput.size(); i++)
+			for(int i = 0; i < currentInput.size(); i++)
 				if(stroke[i] != currentInput[i])
 					return false;
 			return true;

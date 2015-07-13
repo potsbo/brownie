@@ -1,6 +1,8 @@
 #pragma once
+
 #include <string>
 #include <iostream>
+
 class StringJ : public std::string{
 	private:
 		std::string str = "";

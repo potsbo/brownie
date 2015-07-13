@@ -1,1 +1,2 @@
+#pragma once
 char getKeyboardInput();

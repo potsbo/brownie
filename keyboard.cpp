@@ -1,3 +1,4 @@
+#include "keyboard.h"
 #include <iostream>
 // works only on Unix-like
 char getKeyboardInput(){

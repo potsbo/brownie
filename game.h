@@ -7,7 +7,7 @@
 #include "pattern.h"
 #include "romajitable.h"
 #include "split.h"
-#include "stringJ.h"
+#include "stringj.h"
 #include "keyboard.h"
 
 extern bool debugFlag;
@@ -302,6 +302,7 @@ class Game {
 			vector<string> newList= split(newObjective,'\n');
 			objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
 		}
+
 		void setSeq(bool flag){
 			seqFlag = flag;
 		}
