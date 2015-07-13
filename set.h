@@ -1,4 +1,4 @@
-#pragma ocne
+#pragma once
 #include <stdio.h>
 #include <set>
 using namespace std;
