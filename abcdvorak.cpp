@@ -1,7 +1,9 @@
 #include <string>
 #include "abcdvorak.h"
 
-ABCDvorak::ABCDvorak(string saveData ){};
+ABCDvorak::ABCDvorak(string saveData){
+/* TODO: load save data */
+};
 void ABCDvorak::run(){
 	for(int i = currentPhase; i < endPahese; i++ ){
 		string index = to_string(i);
