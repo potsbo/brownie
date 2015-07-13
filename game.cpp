@@ -48,12 +48,6 @@ Pattern Game::process(string unprocessedInputs){
 }
 
 int Game::calcuPotentialPatternNum(string unprocessedInputs, int unuseInput){
-	/* cout  << "unuseInput = " << unuseInput << endl; */
-	/* cout  << "unprocessedInputs.size() = " << unprocessedInputs.size() << endl; */
-	/* TODO why this is error */
-	/* if(unuseInput > unprocessedInputs.size()){ */
-	/* 	exit(1); */
-	/* } */
 
 	if(unuseInput > 0)
 		unprocessedInputs = unprocessedInputs.substr(0, unprocessedInputs.size() - unuseInput);
