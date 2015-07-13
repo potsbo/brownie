@@ -142,7 +142,6 @@ class CandidatePattern {
 			for(char c : validInputList){
 				validInputSet.insert(c);
 			}
-			/* TODO exclude \0 */
 			return validInputSet;
 		}
 };
