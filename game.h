@@ -190,11 +190,14 @@ class Game {
 
 				set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
 				/* cout << "validInputList.size() = " << validInputList.size() << endl; */
+				/* if(index==objective.size()-2 && validInputList.size()==1 && validInputList.find(' ') != validInputList.end()){ */
+				/* 	unprocessedInputs += ' '; */
+				/* }else{ */
+				/* 	/1* loop until getting valid input *1/ */
+					unprocessedInputs += waitForValidInput(validInputList);
+				/* } */
 				if(index==objective.size()-2 && validInputList.size()==1 && validInputList.find(' ') != validInputList.end()){
 					unprocessedInputs += ' ';
-				}else{
-					/* loop until getting valid input */
-					unprocessedInputs += waitForValidInput(validInputList);
 				}
 				if(debugFlag)
 					cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
