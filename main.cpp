@@ -120,16 +120,41 @@ class Game {
 		}
 
 		vector<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs){
-			/* cout << "unprocessedInputs: " << unprocessedInputs << endl; */
 			string objectiveKana = objective.nthUnicodeLetter(index);
-			string nextKana = objective.nthUnicodeLetter(index+1);
 			candidatePat.reset(romajiTable.firstCandidate(objectiveKana).getPatterns());
-			if(nextKana != "" ){
-				std::vector<char> nextLetterRequirement 
-					= romajiTable.getCandidate(nextKana).getNthStrokes(0);
-			}
 			candidatePat.onlyCompatibleWithCurrentInput(unprocessedInputs);
-			return  candidatePat.getValidInput(unprocessedInputs);
+			vector<char> validInputList = candidatePat.getValidInput(unprocessedInputs);
+
+			int cnt = 0;
+			Pattern processablePat;
+			for(Pattern pat : romajiTable.getAllPattern()){
+				if(pat.getStroke() == unprocessedInputs){
+					cnt++;
+					processablePat = pat;	
+					if(cnt > 1)
+						break;
+				}
+			}
+			vector<char> anotherList;
+			if(cnt == 1){
+				string stroke = processablePat.getStroke();
+				string output = processablePat.getOutput();
+				std::vector<string> kana = processablePat.getObjective();
+				string potentialInput;
+				for(int i = stroke.size(); i < unprocessedInputs.size(); i++){
+					potentialInput += unprocessedInputs[i];
+				}
+				anotherList = makeValidInputList(objective, index+kana.size(), potentialInput);
+			}
+
+			validInputList.insert(validInputList.end(), anotherList.begin(), anotherList.end());
+			/* check valid inputs */
+			if(validInputList.empty()){
+				cout << "No valid input for objectiveKana " << objectiveKana;
+				cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
+				exit(1);
+			}
+			return validInputList;
 		}
 
 		void typeStringChallenge(StringJ objective){
@@ -142,51 +167,16 @@ class Game {
 
 			while(index < objective.size()){
 
-				string objectiveKana = objective.nthUnicodeLetter(index);
-				string nextKana = objective.nthUnicodeLetter(index+1);
-
 				if(debugFlag){
+					string objectiveKana = objective.nthUnicodeLetter(index);
 					cout << "new objective: " << objectiveKana << "  (" << index << "th letter)" << endl;
 					cout << "unprocessedInputs: " << unprocessedInputs << endl;
 				}
 
 				vector<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
 
-				int cnt = 0;
-				Pattern processablePat;
-				for(Pattern pat : romajiTable.getAllPattern()){
-					if(pat.getStroke() == unprocessedInputs){
-						cnt++;
-						processablePat = pat;	
-						if(cnt > 1)
-							break;
-					}
-				}
-
-				vector<char> anotherList;
-				if(cnt == 1){
-					string stroke = processablePat.getStroke();
-					string output = processablePat.getOutput();
-					std::vector<string> kana = processablePat.getObjective();
-					string potentialInput;
-					for(int i = stroke.size(); i < unprocessedInputs.size(); i++){
-						potentialInput += unprocessedInputs[i];
-					}
-					anotherList = makeValidInputList(objective, index+kana.size(), potentialInput);
-				}
-
-				validInputList.insert(validInputList.end(), anotherList.begin(), anotherList.end());
-
-				/* check valid inputs */
-				if(validInputList.empty()){
-					cout << "No valid input for objectiveKana " << objectiveKana;
-					cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
-					exit(1);
-				}
-
 				/* loop until getting valid input */
-				char newInput = waitForValidInput(validInputList);
-				unprocessedInputs += newInput;
+				unprocessedInputs += waitForValidInput(validInputList);
 				if(debugFlag)
 					cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 
