@@ -1,5 +1,7 @@
 #pragma once
+
 #include "split.h"
+#include "stringj.h"
 extern bool debugFlag;
 
 class Pattern {
