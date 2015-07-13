@@ -34,11 +34,7 @@ char Game::waitForValidInput(set<char> validInputList){
 
 Pattern Game::getProcessablePattern(string unprocessedInputs){
 	vector<Pattern> patternSet;
-	if(!potentialPattern.empty()){
-		patternSet = potentialPattern;
-	}else{
-		patternSet = romajiTable.getAllPattern();
-	}
+	patternSet = romajiTable.getAllPattern();
 	for(Pattern pat : patternSet)
 		if(unprocessedInputs == pat.getStroke())
 			return pat;
@@ -51,14 +47,9 @@ int Game::calcuPotentialPatternNum(string unprocessedInputs, int unuseInput){
 
 	if(unuseInput > 0)
 		unprocessedInputs = unprocessedInputs.substr(0, unprocessedInputs.size() - unuseInput);
-	potentialPattern.clear();
 
 	vector<Pattern> patternSet;
-	if(!potentialPattern.empty()){
-		patternSet = potentialPattern;
-	}else{
-		patternSet = romajiTable.getAllPattern();
-	}
+	patternSet = romajiTable.getAllPattern();
 	if(debugFlag && unuseInput > 0)
 		cout << endl << "(in calcuPotentialPatternNum())unprocessedInputs = " << unprocessedInputs << endl;
 
@@ -146,12 +137,11 @@ void Game::typeStringChallenge(StringJ objective){
 
 	int index = 0;
 	string unprocessedInputs = "";
-	potentialPattern.clear();
 	if(debugFlag){
 		cout << "objective.size() = " << objective.size() << endl;
 	}
 
-	while(index < objective.size()){
+	while(index < objective.size()-1){
 
 		if(debugFlag){
 			string objectiveKana = objective.nthUnicodeLetter(index);
@@ -165,8 +155,6 @@ void Game::typeStringChallenge(StringJ objective){
 
 		if(calcuPotentialPatternNum(unprocessedInputs) == 1){
 			process(&unprocessedInputs, &index);
-			if(index==objective.size()-1)
-				index++;
 		}else if(calcuPotentialPatternNum(unprocessedInputs) == 0){
 			if(calcuPotentialPatternNum(unprocessedInputs,1) == 1){
 				process(&unprocessedInputs, &index,1);
@@ -197,6 +185,19 @@ Game::Game(string tableFile, string objectiveFile){
 	cout << "文字列リスト読み込み完了" << endl;
 }
 
+void Game::addObjective(string newObjective){
+	vector<string> newList= split(newObjective,'\n');
+	this->objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
+}
+
+void Game::setSeq(bool flag){
+	this->seqFlag = flag;
+}
+
+void Game::setRound(int num){
+	this->loop = num;
+}
+
 void Game::run(){
 	for(int i = 0; i < loop; i++){
 		int objectiveListSize = objectiveList.size();
@@ -213,14 +214,5 @@ void Game::run(){
 		typeStringChallenge(objective);
 		cout <<  endl << "Done " << i+1 << " of " << loop << endl;
 	}
-}
-
-void Game::addObjective(string newObjective){
-	vector<string> newList= split(newObjective,'\n');
-	objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
-}
-
-void Game::setSeq(bool flag){
-	seqFlag = flag;
 }
 
