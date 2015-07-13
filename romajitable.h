@@ -115,13 +115,17 @@ class CandidatePattern {
 
 		}
 		void onlyCompatibleWithCurrentInput(std::string currentInput){
-			std::vector<Pattern>::iterator it;
-			for( it=pats.begin(); it!=pats.end(); it++){
-				if( !(*it).isCompatibleWithCurrentInput(currentInput)){
-					pats.erase(it);
+			std::vector<Pattern>::iterator itr = pats.begin();
+			while (itr != pats.end()) {
+				cout << "hello" << endl;
+				if(!(*itr).isCompatibleWithCurrentInput(currentInput)) {
+					itr = pats.erase(itr);
+				}else {
+					++itr;
 				}
 			}
 		}
+
 		std::vector<char> getNthStrokes(int i){
 			using namespace std;
 			vector<char> letters;
