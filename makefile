@@ -7,6 +7,9 @@ SOURCEFILES:=$(wildcard *.cpp)
 HEADERFILES:=$(wildcard *.h)
 OBJECTFILES=$(patsubst %.cpp,%.o,$(SOURCEFILES))
 
+.cpp.o:
+	$(CC) $(CFLAGS) -c $^
+
 $(BINNAME): $(OBJECTFILES) $(HEADERFILES)
 	$(CC) $(CFLAGS) -o $(BINNAME) $(OBJECTFILES)
 
