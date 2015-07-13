@@ -174,8 +174,9 @@ class Game {
 			int index = 0;
 			string unprocessedInputs = "";
 			potentialPattern.clear();
-			if(debugFlag)
+			if(debugFlag){
 				cout << "objective.size() = " << objective.size() << endl;
+			}
 
 			while(index < objective.size()){
 
@@ -254,8 +255,9 @@ class Game {
 			}
 			string line;
 			while (getline(ifs, line)){
-				addObjective(line);
+				addObjective(line + " ");
 			}
+
 			cout << "文字列リスト読み込み完了" << endl;
 		}
 		void run(){

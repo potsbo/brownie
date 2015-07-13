@@ -183,6 +183,10 @@ class RomajiTable {
 					}
 					uniquePatterns.push_back(newPattern);
 				}
+				Pattern sentinel(" \t ");
+				uniquePatterns.push_back(sentinel);
+
+
 				if(debugFlag)
 					std::cout << "uniquePatterns.size() = " << uniquePatterns.size() << std::endl;
 				allPatterns = uniquePatterns;
@@ -221,6 +225,8 @@ class RomajiTable {
 					return potentialPatterSet;
 				}
 			}
+			std::cout << "breakpoint before" << std::endl;
+			std::cout << "breakpoint after" << std::endl;
 			std::cout << "ERROR: no usable stroke for \"" 
 				<< kana << "\"  was found; check your romaji table" << std::endl;
 			exit(1);
