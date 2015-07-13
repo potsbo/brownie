@@ -90,23 +90,32 @@ class CandidatePattern {
 			this->pats = pats;
 		}
 
-		/* void onlyCompatibleWithNextLetter(StringJ objective, int index, std::vector<Pattern> allPatterns){ */
-		/* 	std::cout << pats.size(); */
+		void onlyCompatibleWithNextKanas(StringJ objective, int index, std::vector<Pattern> allPatterns){
+			std::cout << pats.size();
 
-		/* 	std::vector<char> requiredAlphabet; */
-		/* 	std::vector<Pattern>::iterator itr = pats.begin(); */
-		/* 	while (itr != pats.end()) { */
-		/* 		/1* cout << (*itr).getStroke() << endl; *1/ */
-		/* 		if(!(*itr).isCompatibleWithNextInput(requiredAlphabet)) { */
-		/* 			/1* if(!(*itr).isCompatibleWithNextKana()){ *1/ */
-		/* 				itr = pats.erase(itr); */
-		/* 			/1* } *1/ */
-		/* 		} else { */
-		/* 			++itr; */
-		/* 		} */
-		/* 	} */
+			std::vector<char> requiredAlphabet;
+			std::vector<Pattern>::iterator itr = pats.begin();
+			while (itr != pats.end()) {
+				bool compatiFlag = true;
+				std::vector<std::string> kana = (*itr).getObjective();
 
-		/* } */
+				for(int i = 0; i < kana.size(); i++){
+					if(i + index > objective.size()){
+						compatiFlag = false;
+						break;
+					}
+					if(kana[i] != objective.nthUnicodeLetter(i + index)){
+						compatiFlag = false;
+					}
+				}
+				if(!compatiFlag) {
+					itr = pats.erase(itr);
+				} else {
+					++itr;
+				}
+			}
+
+		}
 		void onlyCompatibleWithCurrentInput(std::string currentInput){
 			std::vector<Pattern>::iterator it;
 			for( it=pats.begin(); it!=pats.end(); it++){

@@ -50,10 +50,6 @@ class Pattern {
 			}
 			return false;
 		}
-		bool isCompatibleWithNextKana(){
-			return true;
-			/* TODO */
-		}
 		bool isCompatibleWithNextInput(std::vector<char> requiredAlphabet){
 			if(output == "" && this->kana.size() < 1){
 				return true;

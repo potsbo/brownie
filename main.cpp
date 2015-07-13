@@ -123,6 +123,7 @@ class Game {
 			string objectiveKana = objective.nthUnicodeLetter(index);
 			candidatePat.reset(romajiTable.firstCandidate(objectiveKana).getPatterns());
 			candidatePat.onlyCompatibleWithCurrentInput(unprocessedInputs);
+			candidatePat.onlyCompatibleWithNextKanas(objective, index, romajiTable.getAllPattern());
 			vector<char> validInputList = candidatePat.getValidInput(unprocessedInputs);
 
 			int cnt = 0;
@@ -153,6 +154,9 @@ class Game {
 				cout << "No valid input for objectiveKana " << objectiveKana;
 				cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 				exit(1);
+			}
+			for(char c : validInputList){
+				cout << c;
 			}
 			return validInputList;
 		}
