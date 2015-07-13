@@ -18,3 +18,7 @@ void ABCDvorak::run(){
 	}
 }
 
+void ABCDvorak::setTable(string table){
+	this->dvorakTable = table;
+}
+

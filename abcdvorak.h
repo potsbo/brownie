@@ -10,5 +10,6 @@ class ABCDvorak{
 		string dvorakTable = "ascii";
 	public:
 		ABCDvorak(string saveData = "");
+		void setTable(string table);
 		void run();
 };
