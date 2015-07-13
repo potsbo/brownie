@@ -18,6 +18,7 @@ class ABCDvorak{
 				string objectiveFile = "abcd" + index;
 
 				Game abcdGame(dvorakTable,objectiveFile);
+				abcdGame.setSeq(true);
 				abcdGame.run();
 			}
 		}

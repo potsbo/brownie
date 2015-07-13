@@ -155,7 +155,6 @@ class RomajiTable {
 		void set(std::string sourceFile = "googleNihongoRomajiTable"){
 			std::string tableString;
 			std::vector<Pattern> uniquePatterns;
-			cout << sourceFile << endl;
 			if( sourceFile == "./tables/ascii" ){ 
 				/* create table with ascii code */
 				int startPoint = 32;

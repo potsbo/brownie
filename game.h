@@ -189,16 +189,25 @@ class Game {
 				}
 
 				set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
-				/* cout << "validInputList.size() = " << validInputList.size() << endl; */
-				/* if(index==objective.size()-2 && validInputList.size()==1 && validInputList.find(' ') != validInputList.end()){ */
-				/* 	unprocessedInputs += ' '; */
-				/* }else{ */
-				/* 	/1* loop until getting valid input *1/ */
-					unprocessedInputs += waitForValidInput(validInputList);
-				/* } */
-				if(index==objective.size()-2 && validInputList.size()==1 && validInputList.find(' ') != validInputList.end()){
-					unprocessedInputs += ' ';
+				unprocessedInputs += waitForValidInput(validInputList);
+
+				if(index==objective.size()-2 && calcuPotentialPatternNum(unprocessedInputs) == 1){
+					Pattern selectedPattern = candidatePat.getSelected();
+					vector<string> carryKana;
+					carryKana = selectedPattern.getObjective();
+					index += carryKana.size(); 
+					unprocessedInputs = selectedPattern.getOutput();
+					if(debugFlag){
+						cout << "carryKana.size() = " << carryKana.size();
+						cout << "kana ";
+						for( string str : carryKana)
+							cout << str;
+						cout << " is proccessed" << endl;
+					}
+
+					index++;
 				}
+
 				if(debugFlag)
 					cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 
