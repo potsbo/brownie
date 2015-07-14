@@ -20,7 +20,7 @@ int ABCDvorak::run(){
 		abcdGame.setSeq(true);
 		int result = abcdGame.run();
 		if(result == 3){
-			cout << "save?[Yn]:";
+			cout << endl << "save?[Yn]:";
 			string input;
 			cin >> input;
 			if(input != "n" && input != "N"){
