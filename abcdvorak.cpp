@@ -1,8 +1,10 @@
 #include <string>
 #include "abcdvorak.h"
+#include "game.h"
 
 ABCDvorak::ABCDvorak(string saveData){
 /* TODO: load save data */
+	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
 void ABCDvorak::run(){
 	for(int i = currentPhase; i < endPahese; i++ ){
@@ -14,13 +16,12 @@ void ABCDvorak::run(){
 		const string prefix = "ABasicCourseinDvorak/";
 		string objectiveFile = prefix + "abcd" + index;
 
-		Game abcdGame(dvorakTable,objectiveFile);
+		Game abcdGame(table,objectiveFile);
 		abcdGame.setSeq(true);
 		abcdGame.run();
 	}
 }
 
 void ABCDvorak::setTable(string table){
-	this->dvorakTable = table;
+	this->dvorakTableName = table;
 }
-

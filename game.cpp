@@ -1,7 +1,5 @@
 #include "game.h"
 #include "match.h"
-const std::string TABLE_FILE_PREFIX = "./tables/";
-const std::string OBJECTIVE_FILE_PREFIX= "./objectives/";
 
 char Game::waitForValidInput(set<char> validInputList){
 	/* cout << "now you can type" << endl; */
@@ -157,11 +155,7 @@ void Game::typeStringChallenge(StringJ objective){
 	}
 }
 
-Game::Game(string tableFile, string objectiveFile){
-	tableFile = TABLE_FILE_PREFIX + tableFile;
-	romajiTable.set(tableFile);
-	cout << "ローマ字テーブル読み込み完了" << endl;
-
+void Game::setObjective(string objectiveFile){
 	objectiveFile = OBJECTIVE_FILE_PREFIX + objectiveFile;
 	std::ifstream ifs(objectiveFile);
 	if (ifs.fail()){
@@ -183,6 +177,19 @@ Game::Game(string tableFile, string objectiveFile){
 	}
 
 	cout << "文字列リスト読み込み完了" << endl;
+
+}
+
+Game::Game(RomajiTable table, string objectiveFile){
+	setTable(table);
+	setObjective(objectiveFile);
+}
+
+Game::Game(string tableFile, string objectiveFile){
+	tableFile = TABLE_FILE_PREFIX + tableFile;
+	romajiTable.set(tableFile);
+	cout << "ローマ字テーブル読み込み完了" << endl;
+	setObjective(objectiveFile);
 }
 
 void Game::addObjective(string newObjective){
@@ -196,6 +203,10 @@ void Game::setSeq(bool flag){
 
 void Game::setRound(int num){
 	this->loop = num;
+}
+
+void Game::setTable(RomajiTable table){
+	this->romajiTable = table;
 }
 
 void Game::run(){
