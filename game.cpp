@@ -172,7 +172,11 @@ Game::Game(string tableFile, string objectiveFile){
 	string line;
 	while (getline(ifs, line)){
 		if(line[0] == '#'){
-			gameTitle += line.substr(1,line.size()) + '\n';
+			int i = 1;
+			while(line[i] == ' '){
+				i++;
+			}
+			gameTitle += line.substr(i,line.size()) + '\n';
 		}else{
 			addObjective(line + " ");
 		}
