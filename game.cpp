@@ -246,7 +246,7 @@ int Game::run(){
 			objective = objectiveList[rand() % objectiveListSize];
 		}
 
-		cout <<  endl << i+1 << " of " << loop << endl;
+		cout << i+1 << " of " << loop << endl;
 		switch(typeStringChallenge(objective)){
 			case 1: // reach typoMax, go to next loop
 				break;
