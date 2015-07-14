@@ -32,14 +32,8 @@ char Game::waitForValidInput(set<char> validInputList){
 	exit(1);
 }
 
-Pattern Game::process(string unprocessedInputs){
-	vector<Pattern> patternSet;
-	if(!potentialPattern.empty()){
-		patternSet = potentialPattern;
-	}else{
-		patternSet = romajiTable.getAllPattern();
-	}
-	for(Pattern pat : patternSet)
+Pattern Game::getProcessablePattern(string unprocessedInputs){
+	for(Pattern pat : romajiTable.getAllPattern())
 		if(unprocessedInputs == pat.getStroke())
 			return pat;
 
@@ -51,26 +45,17 @@ int Game::calcuPotentialPatternNum(string unprocessedInputs, int unuseInput){
 
 	if(unuseInput > 0)
 		unprocessedInputs = unprocessedInputs.substr(0, unprocessedInputs.size() - unuseInput);
-	potentialPattern.clear();
 
-	vector<Pattern> patternSet;
-	if(!potentialPattern.empty()){
-		patternSet = potentialPattern;
-	}else{
-		patternSet = romajiTable.getAllPattern();
-	}
 	if(debugFlag && unuseInput > 0)
 		cout << endl << "(in calcuPotentialPatternNum())unprocessedInputs = " << unprocessedInputs << endl;
 
 	int patternNum = 0;
 	if(unuseInput == -1){
-		for(Pattern pat : patternSet)
+		for(Pattern pat : romajiTable.getAllPattern())
 			patternNum += (int)prefixMatch<string>(unprocessedInputs, pat.getStroke());
 	}else{
-		for(Pattern pat : patternSet){
-			/* cout << unprocessedInputs << " == " << pat.getStroke() << "?)" <<endl; */
+		for(Pattern pat : romajiTable.getAllPattern()){
 			patternNum += (int)(unprocessedInputs == pat.getStroke());
-			/* (pat.getStroke() == unprocessedInputs); */
 		}
 	}
 
@@ -97,8 +82,7 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 	set<char> anotherList;
 	if(cnt == 1){
 		string stroke = processablePat.getStroke();
-		string output = processablePat.getOutput();
-		std::vector<string> kana = processablePat.getObjective();
+		vector<string> kana = processablePat.getObjective();
 		string potentialInput;
 		for(int i = stroke.size(); i < unprocessedInputs.size(); i++){
 			potentialInput += unprocessedInputs[i];
@@ -110,9 +94,8 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 	validInputList = Union(validInputList, anotherList);
 	if(debugFlag){
 		cout << "validInputList: [";
-		for(char c : validInputList){
+		for(char c : validInputList)
 			cout << c;
-		}
 		cout << "]" << endl;
 	}
 	/* check valid inputs */
@@ -121,20 +104,37 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 		cout  << " and unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
 		exit(1);
 	}
+
 	validInputList.erase('\0');
 	return validInputList;
+}
+
+void Game::process(string *unprocessedInputs, int *index, int unuseInputNum){
+	Pattern selectedPattern = getProcessablePattern(unprocessedInputs->substr(0,unprocessedInputs->size() -unuseInputNum));
+	string unprocessedInputsStore 
+		= unprocessedInputs->substr(unprocessedInputs->size()-unuseInputNum, unprocessedInputs->size());
+	vector<string> carryKana;
+	carryKana = selectedPattern.getObjective();
+	*index += carryKana.size(); 
+	*unprocessedInputs = selectedPattern.getOutput() + unprocessedInputsStore;
+	if(debugFlag){
+		cout << "carryKana.size() = " << carryKana.size();
+		cout << "kana ";
+		for( string str : carryKana)
+			cout << str;
+		cout << " is proccessed" << endl;
+	}
 }
 
 void Game::typeStringChallenge(StringJ objective){
 
 	int index = 0;
 	string unprocessedInputs = "";
-	potentialPattern.clear();
 	if(debugFlag){
 		cout << "objective.size() = " << objective.size() << endl;
 	}
 
-	while(index < objective.size()){
+	while(index < objective.size()-1){
 
 		if(debugFlag){
 			string objectiveKana = objective.nthUnicodeLetter(index);
@@ -143,71 +143,14 @@ void Game::typeStringChallenge(StringJ objective){
 		}
 
 		set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
+
 		unprocessedInputs += waitForValidInput(validInputList);
 
-		if(index==objective.size()-2 && calcuPotentialPatternNum(unprocessedInputs) == 1){
-			Pattern selectedPattern = candidatePat.getSelected();
-			vector<string> carryKana;
-			carryKana = selectedPattern.getObjective();
-			index += carryKana.size(); 
-			unprocessedInputs = selectedPattern.getOutput();
-			if(debugFlag){
-				cout << "carryKana.size() = " << carryKana.size();
-				cout << "kana ";
-				for( string str : carryKana)
-					cout << str;
-				cout << " is proccessed" << endl;
-			}
-
-			index++;
-		}
-
-		if(debugFlag)
-			cout  << "unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
-
-
-		/* if unprocessedInputs is same with any pattern, go to nextletter */
-		if(calcuPotentialPatternNum(unprocessedInputs) == 0){
-			if(calcuPotentialPatternNum(unprocessedInputs,1) == 1){
-				/* cout << "processing n" << endl; */
-				Pattern selectedPattern = process(unprocessedInputs.substr(0,unprocessedInputs.size()-1));
-				vector<string> carryKana;
-				carryKana = selectedPattern.getObjective();
-				string storeInput = unprocessedInputs;
-				unprocessedInputs = "";
-				for(int i = selectedPattern.getStroke().size(); i < storeInput.size(); i++){
-					unprocessedInputs += storeInput[i];
-				}
-
-				if(debugFlag)
-					cout  << "renewed unprocessedInputs \"" << unprocessedInputs << "\"" << endl;
-
-				index += carryKana.size(); 
-				if(debugFlag){
-					cout << endl;
-					cout << "carryKana.size() = " << carryKana.size();
-					cout << "kana ";
-					for( string str : carryKana)
-						cout << str;
-					cout << " is proccessed" << endl;
-				}
-			}
-		}
-
 		if(calcuPotentialPatternNum(unprocessedInputs) == 1){
-			if(candidatePat.hasProcessablePatternOf(unprocessedInputs)){
-				Pattern selectedPattern = candidatePat.getSelected();
-				vector<string> carryKana;
-				carryKana = selectedPattern.getObjective();
-				index += carryKana.size(); 
-				unprocessedInputs = selectedPattern.getOutput();
-				if(debugFlag){
-					cout << "carryKana.size() = " << carryKana.size();
-					cout << "kana ";
-					for( string str : carryKana)
-						cout << str;
-					cout << " is proccessed" << endl;
-				}
+			process(&unprocessedInputs, &index);
+		}else if(calcuPotentialPatternNum(unprocessedInputs) == 0){
+			if(calcuPotentialPatternNum(unprocessedInputs,1) == 1){
+				process(&unprocessedInputs, &index,1);
 			}
 		}
 
@@ -228,13 +171,31 @@ Game::Game(string tableFile, string objectiveFile){
 
 	string line;
 	while (getline(ifs, line)){
-		addObjective(line + " ");
+		if(line[0] == '#'){
+			gameTitle += line.substr(1,line.size()) + '\n';
+		}else{
+			addObjective(line + " ");
+		}
 	}
 
 	cout << "文字列リスト読み込み完了" << endl;
 }
 
+void Game::addObjective(string newObjective){
+	vector<string> newList= split(newObjective,'\n');
+	this->objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
+}
+
+void Game::setSeq(bool flag){
+	this->seqFlag = flag;
+}
+
+void Game::setRound(int num){
+	this->loop = num;
+}
+
 void Game::run(){
+	cout << endl << gameTitle << endl;
 	for(int i = 0; i < loop; i++){
 		int objectiveListSize = objectiveList.size();
 		string objective;
@@ -249,14 +210,5 @@ void Game::run(){
 		typeStringChallenge(objective);
 		cout <<  endl << "Done " << i+1 << " of " << loop << endl;
 	}
-}
-
-void Game::addObjective(string newObjective){
-	vector<string> newList= split(newObjective,'\n');
-	objectiveList.insert(objectiveList.end(), newList.begin(), newList.end());
-}
-
-void Game::setSeq(bool flag){
-	seqFlag = flag;
 }
 

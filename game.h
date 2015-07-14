@@ -20,17 +20,20 @@ class Game {
 		RomajiTable romajiTable;
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
-		vector<Pattern> potentialPattern;
+		string gameTitle;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 
-		char waitForValidInput(set<char> validInputList = set<char>());
-		Pattern process(string unprocessedInputs);
-		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = -1);
-		set<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs);
+		/* about typeStringChallenge */
 		void typeStringChallenge(StringJ objective);
+		set<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs);
+		char waitForValidInput(set<char> validInputList = set<char>());
+		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = -1);
+		void process(string *unprocessedInputs, int *index, int unuseInputNum = 0);
+		Pattern getProcessablePattern(string unprocessedInputs);
 	public:
 		Game(string tableFile = "googleNihongoRomajiTable", string objectiveFile = "default");
-		void run();
 		void addObjective(string newObjective);
 		void setSeq(bool flag);
+		void setRound(int num);
+		void run();
 };
