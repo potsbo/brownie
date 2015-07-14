@@ -4,6 +4,7 @@
 
 ABCDvorak::ABCDvorak(string saveData){
 /* TODO: load save data */
+	currentPhase = 1;
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
 int ABCDvorak::run(){
