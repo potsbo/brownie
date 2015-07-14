@@ -141,6 +141,12 @@ void Game::typeStringChallenge(StringJ objective){
 		}
 
 		set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
+		if(!caseSensitive){
+			for(char c : validInputList){
+				if(65 <= c && c <=  90) validInputList.insert(c+32);
+				if(97 <= c && c <= 122) validInputList.insert(c-32);
+			}
+		}
 
 		unprocessedInputs += waitForValidInput(validInputList);
 
