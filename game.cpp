@@ -235,7 +235,7 @@ void Game::setTypoMax(int typoMax){
 }
 
 int Game::run(){
-	cout << endl << gameTitle << endl;
+	cout << endl << gameTitle;
 	for(int i = 0; i < loop; i++){
 		int objectiveListSize = objectiveList.size();
 		string objective;
@@ -246,7 +246,7 @@ int Game::run(){
 			objective = objectiveList[rand() % objectiveListSize];
 		}
 
-		cout << i+1 << " of " << loop << endl;
+		cout << endl << i+1 << " of " << loop << endl;
 		switch(typeStringChallenge(objective)){
 			case 1: // reach typoMax, go to next loop
 				break;
