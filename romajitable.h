@@ -212,6 +212,7 @@ class RomajiTable {
 			}
 			if(debugFlag)
 				printAnalysedPatterns();
+			cout << "ローマ字テーブル読み込み完了" << endl;
 		}
 
 		void printAnalysedPatterns(){

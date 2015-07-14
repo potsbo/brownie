@@ -10,9 +10,10 @@
 #include "stringj.h"
 #include "keyboard.h"
 
+const std::string TABLE_FILE_PREFIX = "./tables/";
+const std::string OBJECTIVE_FILE_PREFIX= "./objectives/";
+
 extern bool debugFlag;
-
-
 
 class Game {
 	private:
@@ -32,8 +33,11 @@ class Game {
 		Pattern getProcessablePattern(string unprocessedInputs);
 	public:
 		Game(string tableFile = "googleNihongoRomajiTable", string objectiveFile = "default");
+		Game(RomajiTable table, string objectiveFile = "default");
 		void addObjective(string newObjective);
 		void setSeq(bool flag);
 		void setRound(int num);
+		void setTable(RomajiTable table);
+		void setObjective(string objectiveFile);
 		void run();
 };
