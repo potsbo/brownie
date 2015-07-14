@@ -27,7 +27,7 @@ class Game {
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 
 		/* about typeStringChallenge */
-		bool typeStringChallenge(StringJ objective);
+		int typeStringChallenge(StringJ objective);
 		set<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs);
 		char waitForValidInput(set<char> validInputList = set<char>());
 		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = -1);
@@ -42,5 +42,6 @@ class Game {
 		void setTable(RomajiTable table);
 		void setObjective(string objectiveFile);
 		void setTypoMax(int typoMax);
-		void run();
+		int run();
+		int save();
 };

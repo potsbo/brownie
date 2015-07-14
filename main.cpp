@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
 		newGame.setTypoMax(a.get<int>("typo"));
 		newGame.run();
 	}
-	cout << "You have done!";
 
 
 	cout << endl;

@@ -9,6 +9,12 @@ char Game::waitForValidInput(set<char> validInputList){
 	while( !valid ){
 		cout << "\x1b[1D"; // move cursor to left by 1 char
 		char input = getKeyboardInput();
+		if(input <= 31){
+			switch(input){
+				case 3:
+					return 3;
+			}
+		}
 		for( char candidate : validInputList){
 			if( input == candidate){
 				valid = true;
@@ -21,7 +27,7 @@ char Game::waitForValidInput(set<char> validInputList){
 		typo.add(input);
 		if(typo.reachLimit()){
 			cout << endl <<  "タイポ上限を超えました" << endl;
-			return 0;
+			return 1;
 		}
 
 		cout << "\x1b[K";  // delete output from right of cursor to end of line
@@ -131,7 +137,7 @@ void Game::process(string *unprocessedInputs, int *index, int unuseInputNum){
 	}
 }
 
-bool Game::typeStringChallenge(StringJ objective){
+int Game::typeStringChallenge(StringJ objective){
 	cout << objective.getStr() << endl;
 
 	int index = 0;
@@ -150,10 +156,12 @@ bool Game::typeStringChallenge(StringJ objective){
 
 		set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
         char input = waitForValidInput(validInputList);
-		if(input == 0){
-			return false;
-		}else{
-			unprocessedInputs += input; 
+		switch(input){
+			case 1: // reach typoMax
+			case 3: // <C-c> to save
+				return input;
+			default:
+				unprocessedInputs += input; 
 		}
 
 		if(calcuPotentialPatternNum(unprocessedInputs) == 1){
@@ -165,7 +173,7 @@ bool Game::typeStringChallenge(StringJ objective){
 		}
 
 	}
-	return true;
+	return 0; // success
 }
 
 void Game::setObjective(string objectiveFile){
@@ -226,7 +234,7 @@ void Game::setTypoMax(int typoMax){
 	this->typo.setMax(typoMax);
 }
 
-void Game::run(){
+int Game::run(){
 	cout << endl << gameTitle << endl;
 	for(int i = 0; i < loop; i++){
 		int objectiveListSize = objectiveList.size();
@@ -239,9 +247,20 @@ void Game::run(){
 		}
 
 		cout <<  endl << i+1 << " of " << loop << endl;
-		while(!typeStringChallenge(objective));
+		switch(typeStringChallenge(objective)){
+			case 1: // reach typoMax, go to next loop
+				break;
+			case 3: // <C-c> was put to save
+				return 3;
+		}
 	}
 	cout << endl << endl;
+	return 0; //success
+}
+
+int Game::save(){
+	cout << "TODO: save feature has not been inplemented" << endl;
+	return 1; // save failed
 }
 
 
