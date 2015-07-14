@@ -12,5 +12,5 @@ class ABCDvorak{
 	public:
 		ABCDvorak(string saveData = "");
 		void setTable(string table);
-		void run();
+		int run();
 };

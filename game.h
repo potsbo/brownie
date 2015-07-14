@@ -9,6 +9,7 @@
 #include "split.h"
 #include "stringj.h"
 #include "keyboard.h"
+#include "typo.h"
 
 const std::string TABLE_FILE_PREFIX = "./tables/";
 const std::string OBJECTIVE_FILE_PREFIX= "./objectives/";
@@ -21,11 +22,12 @@ class Game {
 		RomajiTable romajiTable;
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
+		TypoSet typo;
 		string gameTitle;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 
 		/* about typeStringChallenge */
-		void typeStringChallenge(StringJ objective);
+		int typeStringChallenge(StringJ objective);
 		set<char> makeValidInputList(StringJ objective, int index,string unprocessedInputs);
 		char waitForValidInput(set<char> validInputList = set<char>());
 		int calcuPotentialPatternNum(string unprocessedInputs, int unuseInput = -1);
@@ -39,5 +41,7 @@ class Game {
 		void setRound(int num);
 		void setTable(RomajiTable table);
 		void setObjective(string objectiveFile);
-		void run();
+		void setTypoMax(int typoMax);
+		int run();
+		int save();
 };

@@ -6,7 +6,7 @@ ABCDvorak::ABCDvorak(string saveData){
 /* TODO: load save data */
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
-void ABCDvorak::run(){
+int ABCDvorak::run(){
 	for(int i = currentPhase; i < endPahese; i++ ){
 		string index = to_string(i);
 		if(index.size() == 1){
@@ -18,8 +18,20 @@ void ABCDvorak::run(){
 
 		Game abcdGame(table,objectiveFile);
 		abcdGame.setSeq(true);
-		abcdGame.run();
+		int result = abcdGame.run();
+		if(result == 3){
+			cout << "save?[Yn]:";
+			string input;
+			cin >> input;
+			if(input != "n" && input != "N"){
+				return abcdGame.save();
+			}else{
+				cout << "discard data" << endl;
+			}
+			return 0;
+		}
 	}
+	return 0;
 }
 
 void ABCDvorak::setTable(string table){
