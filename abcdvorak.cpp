@@ -10,7 +10,9 @@ void ABCDvorak::run(){
 		if(index.size() == 1){
 			index = '0' + index;
 		}
-		string objectiveFile = "abcd" + index;
+
+		const string prefix = "ABasicCourseinDvorak/";
+		string objectiveFile = prefix + "abcd" + index;
 
 		Game abcdGame(dvorakTable,objectiveFile);
 		abcdGame.setSeq(true);
