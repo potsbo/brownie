@@ -23,6 +23,7 @@ class Game {
 		vector<string> objectiveList;
 		string gameTitle;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
+		bool caseSensitive = true;
 
 		/* about typeStringChallenge */
 		void typeStringChallenge(StringJ objective);
