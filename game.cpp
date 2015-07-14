@@ -171,7 +171,11 @@ Game::Game(string tableFile, string objectiveFile){
 
 	string line;
 	while (getline(ifs, line)){
-		addObjective(line + " ");
+		if(line[0] == '#'){
+			gameTitle += line.substr(1,line.size()) + '\n';
+		}else{
+			addObjective(line + " ");
+		}
 	}
 
 	cout << "文字列リスト読み込み完了" << endl;
@@ -191,6 +195,7 @@ void Game::setRound(int num){
 }
 
 void Game::run(){
+	cout << endl << gameTitle << endl;
 	for(int i = 0; i < loop; i++){
 		int objectiveListSize = objectiveList.size();
 		string objective;

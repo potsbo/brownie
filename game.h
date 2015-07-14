@@ -20,6 +20,7 @@ class Game {
 		RomajiTable romajiTable;
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
+		string gameTitle;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 
 		/* about typeStringChallenge */
