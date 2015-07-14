@@ -25,6 +25,7 @@ class Game {
 		TypoSet typo;
 		string gameTitle;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
+		bool caseSensitive = true;
 
 		/* about typeStringChallenge */
 		int typeStringChallenge(StringJ objective);

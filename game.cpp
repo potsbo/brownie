@@ -155,6 +155,13 @@ int Game::typeStringChallenge(StringJ objective){
 		}
 
 		set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
+		if(!caseSensitive){
+			for(char c : validInputList){
+				if(65 <= c && c <=  90) validInputList.insert(c+32);
+				if(97 <= c && c <= 122) validInputList.insert(c-32);
+			}
+		}
+
         char input = waitForValidInput(validInputList);
 		switch(input){
 			case 1: // reach typoMax
