@@ -3,6 +3,7 @@
 
 char Game::waitForValidInput(set<char> validInputList){
 	/* cout << "now you can type" << endl; */
+	typo.resetTempCnt();
 	bool valid = false;
 	cout << " "; // place holder
 	while( !valid ){
@@ -16,6 +17,12 @@ char Game::waitForValidInput(set<char> validInputList){
 			}
 		}
 		if(valid) break;
+
+		typo.add(input);
+		if(typo.reachLimit()){
+			cout << endl <<  "タイポ上限を超えました" << endl;
+			return 0;
+		}
 
 		cout << "\x1b[K";  // delete output from right of cursor to end of line
 
@@ -124,7 +131,8 @@ void Game::process(string *unprocessedInputs, int *index, int unuseInputNum){
 	}
 }
 
-void Game::typeStringChallenge(StringJ objective){
+bool Game::typeStringChallenge(StringJ objective){
+	cout << objective.getStr() << endl;
 
 	int index = 0;
 	string unprocessedInputs = "";
@@ -141,8 +149,12 @@ void Game::typeStringChallenge(StringJ objective){
 		}
 
 		set<char> validInputList = makeValidInputList(objective, index, unprocessedInputs);
-
-		unprocessedInputs += waitForValidInput(validInputList);
+        char input = waitForValidInput(validInputList);
+		if(input == 0){
+			return false;
+		}else{
+			unprocessedInputs += input; 
+		}
 
 		if(calcuPotentialPatternNum(unprocessedInputs) == 1){
 			process(&unprocessedInputs, &index);
@@ -153,6 +165,7 @@ void Game::typeStringChallenge(StringJ objective){
 		}
 
 	}
+	return true;
 }
 
 void Game::setObjective(string objectiveFile){
@@ -222,8 +235,7 @@ void Game::run(){
 		}
 
 		cout <<  endl << i+1 << " of " << loop << endl;
-		cout << objective << endl;
-		typeStringChallenge(objective);
+		while(!typeStringChallenge(objective));
 	}
 	cout << endl << endl;
 }
