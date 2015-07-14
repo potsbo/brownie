@@ -3,7 +3,6 @@
 
 char Game::waitForValidInput(set<char> validInputList){
 	/* cout << "now you can type" << endl; */
-	typo.resetTempCnt();
 	bool valid = false;
 	cout << " "; // place holder
 	while( !valid ){
@@ -138,6 +137,7 @@ void Game::process(string *unprocessedInputs, int *index, int unuseInputNum){
 }
 
 int Game::typeStringChallenge(StringJ objective){
+	typo.resetTempCnt();
 	cout << objective.getStr() << endl;
 
 	int index = 0;
@@ -247,9 +247,11 @@ int Game::run(){
 		}
 
 		cout << endl << i+1 << " of " << loop << endl;
-		switch(typeStringChallenge(objective)){
-			case 1: // reach typoMax, go to next loop
-				break;
+		int result = 1;
+		while(result == 1){
+			 result = typeStringChallenge(objective);
+		}
+		switch(result){
 			case 3: // <C-c> was put to save
 				return 3;
 		}

@@ -19,6 +19,7 @@ int ABCDvorak::run(){
 
 		Game abcdGame(table,objectiveFile);
 		abcdGame.setSeq(true);
+		abcdGame.setTypoMax(3); // TODO: make this modifiable
 		int result = abcdGame.run();
 		if(result == 3){
 			cout << endl << "save?[Yn]:";
