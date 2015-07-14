@@ -222,6 +222,10 @@ void Game::setTable(RomajiTable table){
 	this->romajiTable = table;
 }
 
+void Game::setTypoMax(int typoMax){
+	this->typo.setMax(typoMax);
+}
+
 void Game::run(){
 	cout << endl << gameTitle << endl;
 	for(int i = 0; i < loop; i++){
@@ -239,4 +243,5 @@ void Game::run(){
 	}
 	cout << endl << endl;
 }
+
 

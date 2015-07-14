@@ -41,5 +41,6 @@ class Game {
 		void setRound(int num);
 		void setTable(RomajiTable table);
 		void setObjective(string objectiveFile);
+		void setTypoMax(int typoMax);
 		void run();
 };

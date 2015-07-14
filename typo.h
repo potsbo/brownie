@@ -15,10 +15,11 @@ class TypoSet  {
 		std::set<Typo> typoSet;
 		std::vector<char> typoList;
 		int tempCnt = 0;
-		int mistakeMax = 3;
+		int mistakeMax = 0;
 		void analyze();
 	public:
 		void add(char c);
 		void resetTempCnt();
 		bool reachLimit();
+		void setMax(int max);
 };
