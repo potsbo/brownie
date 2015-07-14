@@ -9,7 +9,7 @@ bool debugFlag = false;
 
 int main(int argc, char *argv[]) {
 	cmdline::parser a;
-	a.add("debug", 'd', "debagFlag = true に設定します。");
+	a.add("debug", 'd', "debagFlag = true に設定");
 	a.add<string>("table", 't', "ローマ字テーブルファイル名", false, "googleNihongoRomajiTable");
 	a.add<string>("objective", 'o', "文字列ファイル指定", false, "default");
 	a.add("abcd", '\0', "A Basic Course in Dvorak");

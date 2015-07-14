@@ -210,7 +210,6 @@ void Game::run(){
 			objective = objectiveList[rand() % objectiveListSize];
 		}
 
-		cout << "Type " << objective << endl;
 		cout << objective << endl;
 		typeStringChallenge(objective);
 		cout <<  endl << "Done " << i+1 << " of " << loop << endl;
