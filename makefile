@@ -1,6 +1,6 @@
 PROGNAME= Brownie
 CC=g++
-CFLAGS= -std=c++11 -Wall
+CFLAGS= -std=c++11 -Wall -Wno-sign-compare
 SOURCE= main.o stringj.o keyboard.o
 BINNAME= brownie
 SOURCEFILES:=$(wildcard *.cpp)
