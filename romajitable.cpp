@@ -1,0 +1,231 @@
+#include "romajitable.h"
+
+PatternsForAKana::PatternsForAKana(Pattern newPat){
+	if(!newPat.isValid()){
+		newPat.print("");
+		std::cout << "is not valid" << std::endl;
+	}else{
+		objectiveKana = newPat.getObjective()[0];
+		patterns.push_back(newPat);
+		strokes.push_back(newPat.getStroke());
+	}
+}
+bool PatternsForAKana::isAbleToReturn(std::string letter){
+	return (objectiveKana == letter);
+}
+bool PatternsForAKana::canHold(Pattern pat){
+	/* std::cout << "hello in canhold()" << std::endl; */
+	if(pat.isValid()){
+		if( objectiveKana == pat.getObjective()[0]){
+			return true;
+		}
+	}
+	/* cout << "can't hold" << endl; */
+	return false;
+}
+void PatternsForAKana::add(Pattern newPat){
+	if(newPat.isValid()){
+		patterns.push_back(newPat);
+		strokes.push_back(newPat.getStroke());
+	}
+	/* cout << patterns.size() << endl; */
+	/* this->print(); */
+}
+std::vector<std::string> PatternsForAKana::getStrokes(){
+	return strokes;
+}
+
+std::vector<Pattern> PatternsForAKana::getPatterns(){
+	return patterns;
+}
+
+void PatternsForAKana::print(){
+	std::cout << "Objective: " << this->objectiveKana << " " << patterns.size() << std::endl;
+	for(Pattern pat : patterns){
+		pat.print();
+	}
+}
+
+
+bool CandidatePattern::hasProcessablePatternOf(std::string unprocessedInputs){
+	if(debugFlag)
+		std::cout << std::endl << "stroke challenge " << unprocessedInputs << std::endl;
+	for(Pattern pat : pats){
+		if(unprocessedInputs == pat.getStroke()){
+			patternToProcess = pat;
+			return true;
+		}
+	}
+	return false;
+}
+
+CandidatePattern::CandidatePattern(){};
+CandidatePattern::CandidatePattern(PatternsForAKana patterns){
+	pats = patterns.getPatterns();
+}
+
+Pattern CandidatePattern::getSelected(){
+	if(patternToProcess.isValid())
+		return patternToProcess;
+	std::cout << "ERROR: patternToProcess has not been created properly" << std::endl;
+	exit(1);
+}
+
+void CandidatePattern::reset(std::vector<Pattern> pats){
+	this->pats.clear();
+	this->pats = pats;
+}
+
+void CandidatePattern::onlyCompatibleWithNextKanas(StringJ objective, int index, std::vector<Pattern> allPatterns){
+	std::vector<char> requiredAlphabet;
+	std::vector<Pattern>::iterator itr = pats.begin();
+	while (itr != pats.end()) {
+		bool compatiFlag = true;
+		std::vector<std::string> kana = (*itr).getObjective();
+
+		for(int i = 0; i < kana.size(); i++){
+			if(i + index > objective.size()){
+				compatiFlag = false;
+				break;
+			}
+			if(kana[i] != objective.nthUnicodeLetter(i + index)){
+				compatiFlag = false;
+			}
+		}
+		if(!compatiFlag) {
+			itr = pats.erase(itr);
+		} else {
+			++itr;
+		}
+	}
+
+}
+void CandidatePattern::onlyCompatibleWithCurrentInput(std::string currentInput){
+	std::vector<Pattern>::iterator itr = pats.begin();
+	while (itr != pats.end()) {
+		if(!(*itr).isCompatibleWithCurrentInput(currentInput)) {
+			itr = pats.erase(itr);
+		}else {
+			++itr;
+		}
+	}
+}
+
+std::vector<char> CandidatePattern::getNthStrokes(int i){
+	using namespace std;
+	vector<char> letters;
+	for( Pattern some : pats ){
+		letters.push_back(some.nthStroke(i));
+	}
+	return letters;
+}
+
+/* this is safe to use after you call onlyCompatibleWithCurrentInput and onlyCompatibleWithNextLetter */
+std::set<char> CandidatePattern::getValidInput(std::string unprocessedInputs){
+	if(debugFlag)
+		for(Pattern pat : pats){
+			std::cout << pat.getStroke() << std::endl;
+		}
+	std::vector<char> validInputList = getNthStrokes(unprocessedInputs.size());
+	std::set<char> validInputSet;
+	for(char c : validInputList){
+		validInputSet.insert(c);
+	}
+	return validInputSet;
+}
+
+void RomajiTable::set(std::string sourceFile = "googleNihongoRomajiTable"){
+	std::string tableString;
+	std::vector<Pattern> uniquePatterns;
+	if( sourceFile == "./tables/ascii" ){ 
+		/* create table with ascii code */
+		int startPoint = 32;
+		int endPoint = 127;
+		for(int i = startPoint; i < endPoint; i++){
+			uniquePatterns.push_back(Pattern(i,i));
+		}
+	}else{
+		std::ifstream ifs(sourceFile);
+		if (ifs.fail()){
+			std::cerr << "失敗" << std::endl;
+			exit(1);
+		}
+		std::string line;
+		while (getline(ifs, line)){
+			Pattern newPattern(line);
+
+			/* search same stroke to rewrite it */
+			std::vector<Pattern>::iterator it;
+			for( it=uniquePatterns.begin(); it!=uniquePatterns.end(); it++){
+				if( (*it).hasSameStrokeWith(newPattern)){
+					uniquePatterns.erase(it);
+					break;
+				}
+			}
+			uniquePatterns.push_back(newPattern);
+		}
+		Pattern sentinel(" \t ");
+		uniquePatterns.push_back(sentinel);
+	}
+
+
+	if(debugFlag)
+		std::cout << "uniquePatterns.size() = " << uniquePatterns.size() << std::endl;
+	allPatterns = uniquePatterns;
+
+	for(Pattern newPattern : uniquePatterns){
+		/* std::cout << "uniquePatterns loop..." << std::endl; */
+		/* search a kana */
+		bool found = false;
+		for(int i = 0; i < analysedPatterns.size(); i++){
+			if(analysedPatterns[i].canHold(newPattern)){
+				/* cout << "hello in for loop" << endl; */
+				analysedPatterns[i].add(newPattern);
+				found = true;
+				break;
+			}
+		}
+		if(!found){
+			analysedPatterns.push_back(newPattern);
+		}
+	}
+	if(debugFlag)
+		printAnalysedPatterns();
+	std::cout << "ローマ字テーブル読み込み完了" << std::endl;
+}
+
+void RomajiTable::printAnalysedPatterns(){
+	std::cout << "analysedPatterns.size(): " << analysedPatterns.size() << std::endl;
+	for(PatternsForAKana patterns : analysedPatterns){
+		patterns.print();
+	}
+}
+
+PatternsForAKana RomajiTable::firstCandidate(std::string kana){
+	for(PatternsForAKana potentialPatterSet : analysedPatterns){
+		if(potentialPatterSet.isAbleToReturn(kana)){
+			return potentialPatterSet;
+		}
+	}
+	std::cout << "breakpoint before" << std::endl;
+	std::cout << "breakpoint after" << std::endl;
+	std::cout << "ERROR: no usable stroke for \"" 
+		<< kana << "\"  was found; check your romaji table" << std::endl;
+	exit(1);
+}
+
+std::vector<Pattern> RomajiTable::getAllPattern(){
+	return allPatterns;
+}
+
+CandidatePattern RomajiTable::getCandidate(std::string letter){
+	for(PatternsForAKana potentialPatterSet : analysedPatterns){
+		if(potentialPatterSet.isAbleToReturn(letter)){
+			return CandidatePattern(potentialPatterSet);
+		}
+	}
+	std::cout << "ERROR: no usable stroke for \"" 
+		<< letter << "\"  was found; check your romaji table" << std::endl;
+	exit(1);
+}
+
