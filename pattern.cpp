@@ -26,7 +26,7 @@ Pattern::Pattern(std::string str){
 		StringJ strj(sro[1]);
 		this->kana = strj;
 		if(sro.size() == 3){
-			this->output = sro[3];
+			this->output = sro[2];
 		}
 	}
 	/* this->print(); */
