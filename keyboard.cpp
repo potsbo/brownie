@@ -2,8 +2,8 @@
 #include <iostream>
 // works only on Unix-like
 char getKeyboardInput(){
-	system ("/bin/stty raw");
+	system ("/bin/stty raw -echo");
 	char inputChar = getchar();
-	system ("/bin/stty cooked");
+	system ("/bin/stty cooked echo");
 	return inputChar;
 }
