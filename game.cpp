@@ -76,7 +76,7 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 	string objectiveKana = objective.nthUnicodeLetter(index);
 	candidatePat.reset(romajiTable.firstCandidate(objectiveKana).getPatterns());
 	candidatePat.onlyCompatibleWithCurrentInput(unprocessedInputs);
-	candidatePat.onlyCompatibleWithNextKanas(objective, index, romajiTable.getAllPattern());
+	candidatePat.onlyCompatibleWithNextKanas(objective, index);
 	set<char> validInputList = candidatePat.getValidInput(unprocessedInputs);
 
 	int cnt = 0;
@@ -94,7 +94,7 @@ set<char> Game::makeValidInputList(StringJ objective, int index,string unprocess
 		string stroke = processablePat.getStroke();
 		vector<string> kana = processablePat.getObjective();
 		string potentialInput;
-		for(int i = stroke.size(); i < unprocessedInputs.size(); i++){
+		for(unsigned int i = stroke.size(); i < unprocessedInputs.size(); i++){
 			potentialInput += unprocessedInputs[i];
 		}
 		anotherList = makeValidInputList(objective, index+kana.size(), potentialInput);
@@ -146,7 +146,7 @@ int Game::typeStringChallenge(StringJ objective){
 		cout << "objective.size() = " << objective.size() << endl;
 	}
 
-	while(index < objective.size()-1){
+	while(index < (int)objective.size()-1){
 
 		if(debugFlag){
 			string objectiveKana = objective.nthUnicodeLetter(index);

@@ -12,6 +12,6 @@ class StringJ : public std::string{
 		StringJ();
 		std::string nthUnicodeLetter(int nth);
 		/* int size(); */
-		int size();
+		unsigned int size();
 		std::string getStr();
 };

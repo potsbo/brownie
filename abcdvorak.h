@@ -10,7 +10,7 @@ class ABCDvorak{
 		string dvorakTableName = "ascii";
 		RomajiTable table;
 	public:
-		ABCDvorak(string saveData = "");
+		ABCDvorak();
 		void setTable(string table);
 		int run();
 };

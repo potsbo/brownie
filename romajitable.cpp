@@ -76,14 +76,14 @@ void CandidatePattern::reset(std::vector<Pattern> pats){
 	this->pats = pats;
 }
 
-void CandidatePattern::onlyCompatibleWithNextKanas(StringJ objective, int index, std::vector<Pattern> allPatterns){
+void CandidatePattern::onlyCompatibleWithNextKanas(StringJ objective, int index){
 	std::vector<char> requiredAlphabet;
 	std::vector<Pattern>::iterator itr = pats.begin();
 	while (itr != pats.end()) {
 		bool compatiFlag = true;
 		std::vector<std::string> kana = (*itr).getObjective();
 
-		for(int i = 0; i < kana.size(); i++){
+		for(unsigned int i = 0; i < kana.size(); i++){
 			if(i + index > objective.size()){
 				compatiFlag = false;
 				break;
@@ -100,6 +100,7 @@ void CandidatePattern::onlyCompatibleWithNextKanas(StringJ objective, int index,
 	}
 
 }
+
 void CandidatePattern::onlyCompatibleWithCurrentInput(std::string currentInput){
 	std::vector<Pattern>::iterator itr = pats.begin();
 	while (itr != pats.end()) {
@@ -177,7 +178,7 @@ void RomajiTable::set(std::string sourceFile = "googleNihongoRomajiTable"){
 		/* std::cout << "uniquePatterns loop..." << std::endl; */
 		/* search a kana */
 		bool found = false;
-		for(int i = 0; i < analysedPatterns.size(); i++){
+		for(unsigned int i = 0; i < analysedPatterns.size(); i++){
 			if(analysedPatterns[i].canHold(newPattern)){
 				/* cout << "hello in for loop" << endl; */
 				analysedPatterns[i].add(newPattern);

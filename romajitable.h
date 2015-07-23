@@ -33,7 +33,7 @@ class CandidatePattern {
 		CandidatePattern(PatternsForAKana patterns);
 		Pattern getSelected();
 		void reset(std::vector<Pattern> pats);
-		void onlyCompatibleWithNextKanas(StringJ objective, int index, std::vector<Pattern> allPatterns);
+		void onlyCompatibleWithNextKanas(StringJ objective, int index);
 		void onlyCompatibleWithCurrentInput(std::string currentInput);
 		std::vector<char> getNthStrokes(int i);
 		/* this is safe to use after you call onlyCompatibleWithCurrentInput and onlyCompatibleWithNextLetter */

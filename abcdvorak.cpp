@@ -2,7 +2,7 @@
 #include "abcdvorak.h"
 #include "game.h"
 // test
-ABCDvorak::ABCDvorak(string saveData){
+ABCDvorak::ABCDvorak(){
 /* TODO: load save data */
 	currentPhase = 1;
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);

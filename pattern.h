@@ -20,7 +20,7 @@ class Pattern {
 		bool isCompatibleWithCurrentInput(std::string currentInput);
 		char nthStroke(int i);
 		std::string getStroke();
-		std::vector<std::string> getObjective(int i = -1);
+		std::vector<std::string> getObjective();
 		std::string getOutput();
 		void print(std::string splitter = "\n");
 };

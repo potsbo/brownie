@@ -7,7 +7,7 @@ bool prefixMatch(T_TYPE prefix, T_TYPE objective){
 
 	bool found = true;
 
-	for(int i = 0; i < prefix.size(); i++){
+	for(unsigned int i = 0; i < prefix.size(); i++){
 		if(prefix[i] != objective[i]){
 			found = false;
 			break;
@@ -26,7 +26,7 @@ bool suffixMatch(T_TYPE suffix, T_TYPE objective){
 	bool found = true;
 
 	int len = objective.size();
-	for(int i = 1; i <= suffix.size(); i++){
+	for(unsigned int i = 1; i <= suffix.size(); i++){
 		if(suffix[len -i] != objective[len -i]){
 			found = false;
 			break;

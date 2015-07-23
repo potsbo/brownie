@@ -33,7 +33,7 @@ StringJ::StringJ(){}
 string StringJ::nthUnicodeLetter(int nth){
 	using namespace std;
 	nth++;
-	int pos = 0;
+	unsigned int pos = 0;
 	int char_size = 0;
 
 	for (int i = 0; i < nth; i++){
@@ -45,9 +45,9 @@ string StringJ::nthUnicodeLetter(int nth){
 	return str.substr(pos, char_size);
 }
 
-int StringJ::size(){
-	int len = 0;
-	int pos = 0;
+unsigned int StringJ::size(){
+	unsigned int len = 0;
+	unsigned int pos = 0;
 	while(pos < this->str.size()){
 		pos += cntByte(this->str[pos]);
 		len++;

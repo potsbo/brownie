@@ -17,6 +17,7 @@ Pattern::Pattern(char i, char r, std::string o){
 	this->stroke = stroke;
 	StringJ strj(r);
 	this->kana = strj;
+	this->output = o;
 }
 Pattern::Pattern(std::string str){
 	using namespace std;
@@ -54,7 +55,7 @@ bool Pattern::isCompatibleWithNextInput(std::vector<char> requiredAlphabet){
 	}
 }
 bool Pattern::isCompatibleWithCurrentInput(std::string currentInput){
-	for(int i = 0; i < currentInput.size(); i++)
+	for(unsigned int i = 0; i < currentInput.size(); i++)
 		if(stroke[i] != currentInput[i])
 			return false;
 	return true;
@@ -67,10 +68,10 @@ std::string Pattern::getStroke(){
 	return stroke;
 }
 
-std::vector<std::string> Pattern::getObjective(int i){
+std::vector<std::string> Pattern::getObjective(){
 	using namespace std;
 	vector<string> res;
-	for(int i = 0; i < kana.size(); i++){
+	for(unsigned int i = 0; i < kana.size(); i++){
 		res.push_back(this->kana.nthUnicodeLetter(i));
 	}
 	if(res.empty() && debugFlag){
