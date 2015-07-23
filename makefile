@@ -1,28 +1,24 @@
-PROGNAME= Brownie
-CC=g++
-CFLAGS= -std=c++11 -Wall -Wno-sign-compare
-SOURCE= main.o stringj.o keyboard.o
+PROGNAME = Brownie
+CXX = g++
+CXXFLAGS= -std=c++11 -O2 -Wall -Wextra -g
 BINNAME= brownie
-SOURCEFILES:=$(wildcard *.cpp)
-HEADERFILES:=$(wildcard *.h)
-OBJECTFILES=$(patsubst %.cpp,%.o,$(SOURCEFILES))
+OBJECTFILES= main.o abcdvorak.o ascii.o game.o keyboard.o pattern.o romajitable.o split.o stringj.o typo.o
 
-.cpp.o:
-	$(CC) $(CFLAGS) -c $^
 
-$(BINNAME): $(OBJECTFILES) $(HEADERFILES)
-	$(CC) $(CFLAGS) -o $(BINNAME) $(OBJECTFILES)
-
-# $(OBJECTFILES) : $(HEADER_FILES) $(SOURCEFILES)
-# 		$(CC) -c $(CFLAGS) $(OBJECTFILES)
+$(BINNAME): $(OBJECTFILES)
+	$(CXX) $(CXXFLAGS) -o $(BINNAME) $(OBJECTFILES)
 
 e:
 	$(EDITOR) main.cpp
 clean:
-	rm -f $(BINNAME); rm -f *.o;
+	$(RM) $(BINNAME) $(OBJECTFILES) $(wildcard *.d)
 run: $(BINNAME)
 	./$(BINNAME)
 debug:
 	./$(BINNAME) --debug
 redebug: $(BINNAME)  
 	./$(BINNAME) --debug
+%.o: %.cpp
+	$(CXX) -MMD $(CXXFLAGS) -c -o $@ $<
+
+-include $(wildcard *.d)
