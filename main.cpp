@@ -1,7 +1,6 @@
 #include <iostream>
 #include "cmdline.h"
 #include "game.h"
-#include "abcdvorak.h"
 using namespace std;
 
 const std::string VERSION = "0.01";
@@ -28,9 +27,9 @@ int main(int argc, char *argv[]) {
 
 	if(a.exist("abcd")){
 		Game abcdGame("ascii","ABasicCourseinDvorak");
-		/* abcdGame.setPhase(a.get<int>("phase")); */
+		abcdGame.setPhase(a.get<int>("phase"));
 		abcdGame.setSeq(true);
-		abcdGame.setTypoMax(3); // TODO: make this modifiable
+		abcdGame.setTypoMax(a.get<int>("typo"));
 		abcdGame.run();
 	}else{
 		Game newGame(sourceFile,objectiveFile);

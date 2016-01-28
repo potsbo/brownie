@@ -262,9 +262,13 @@ void Game::setTypoMax(int typoMax){
 	this->typo.setMax(typoMax);
 }
 
+void Game::setPhase(int phase){
+	this->startPhase = phase;
+}
 int Game::run(){
 	cout << endl << gameTitle;
-	for(auto objectiveFileName : objectiveFileList){
+	for(int i = startPhase -1; objectiveFileList.size(); i++){
+		string objectiveFileName = objectiveFileList[i];
 		cout << "objectiveFileName " << objectiveFileName << endl;
 		loadObjective(objectiveFileName);
 		for(int i = 0; i < loop; i++){
@@ -284,7 +288,7 @@ int Game::run(){
 			}
 			switch(result){
 				case 3: // <C-c> was put to save
-					return 3;
+					return save();
 			}
 		}
 		cout << endl << endl;
@@ -293,6 +297,13 @@ int Game::run(){
 }
 
 int Game::save(){
-	cout << "TODO: save feature has not been inplemented" << endl;
+	cout << endl << "save?[Yn]:";
+	string input;
+	cin >> input;
+	if(input != "n" && input != "N"){
+		cout << "TODO: save feature has not been inplemented" << endl;
+	}else{
+		cout << "discard data" << endl;
+	}
 	return 1; // save failed
 }

@@ -2,7 +2,7 @@ PROGNAME = Brownie
 CXX = g++
 CXXFLAGS= -std=c++11 -O2 -Wall -Wextra -g
 BINNAME= brownie
-OBJECTFILES= main.o abcdvorak.o ascii.o game.o keyboard.o pattern.o romajitable.o split.o stringj.o typo.o
+OBJECTFILES= main.o ascii.o game.o keyboard.o pattern.o romajitable.o split.o stringj.o typo.o
 
 
 $(BINNAME): $(OBJECTFILES)

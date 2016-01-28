@@ -19,6 +19,7 @@ extern bool debugFlag;
 class Game {
 	private:
 		int loop = 3;
+		int startPhase = 1;
 		RomajiTable romajiTable;
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
@@ -46,6 +47,7 @@ class Game {
 		void setObjective(string objectiveDir);
 		void loadObjective(string objectiveFile);
 		void setTypoMax(int typoMax);
+		void setPhase(int typoMax);
 		int run();
 		int save();
 };
