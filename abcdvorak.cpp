@@ -1,10 +1,11 @@
 #include <string>
 #include "abcdvorak.h"
 #include "game.h"
+#include "cmdline.h"
 // test
 ABCDvorak::ABCDvorak(){
 /* TODO: load save data */
-	currentPhase = 1;
+//  currentPhase = 1;
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
 int ABCDvorak::run(){
@@ -38,4 +39,8 @@ int ABCDvorak::run(){
 
 void ABCDvorak::setTable(string table){
 	this->dvorakTableName = table;
+}
+
+void ABCDvorak::setPhase(int phase){
+  this->currentPhase = phase;
 }
