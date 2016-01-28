@@ -18,5 +18,5 @@ void TypoSet::setMax(int max){
 }
 
 bool TypoSet::reachLimit(){
-	return (mistakeMax > 0 && tempCnt > mistakeMax);
+	return (mistakeMax > -1 && tempCnt > mistakeMax);
 }
