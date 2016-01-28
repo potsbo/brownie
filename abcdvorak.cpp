@@ -7,6 +7,7 @@ ABCDvorak::ABCDvorak(){
 	/* TODO: load save data */
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
+
 int ABCDvorak::run(){
 	for(int i = currentPhase; i < endPahese; i++ ){
 		string index = to_string(i);

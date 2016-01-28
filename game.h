@@ -22,8 +22,10 @@ class Game {
 		RomajiTable romajiTable;
 		CandidatePattern candidatePat;
 		vector<string> objectiveList;
+		vector<string> objectiveFileList;
 		TypoSet typo;
 		string gameTitle;
+		string dirSetting;
 		bool seqFlag = false; // true -> set objective with normal order, false -> random order
 		bool caseSensitive = true;
 
@@ -41,7 +43,8 @@ class Game {
 		void setSeq(bool flag);
 		void setRound(int num);
 		void setTable(RomajiTable table);
-		void setObjective(string objectiveFile);
+		void setObjective(string objectiveDir);
+		void loadObjective(string objectiveFile);
 		void setTypoMax(int typoMax);
 		int run();
 		int save();

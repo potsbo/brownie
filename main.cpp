@@ -27,9 +27,11 @@ int main(int argc, char *argv[]) {
 	string objectiveFile = a.get<string>("objective");
 
 	if(a.exist("abcd")){
-		ABCDvorak newABCD;
-		newABCD.setPhase(a.get<int>("phase"));
-		newABCD.run();
+		Game abcdGame("ascii","ABasicCourseinDvorak");
+		/* abcdGame.setPhase(a.get<int>("phase")); */
+		abcdGame.setSeq(true);
+		abcdGame.setTypoMax(3); // TODO: make this modifiable
+		abcdGame.run();
 	}else{
 		Game newGame(sourceFile,objectiveFile);
 		newGame.setSeq(a.exist("sequence"));

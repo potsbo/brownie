@@ -1,5 +1,7 @@
 #include "game.h"
 #include "match.h"
+#include <sys/types.h>
+#include <dirent.h>
 
 char Game::waitForValidInput(set<char> validInputList){
 	/* cout << "now you can type" << endl; */
@@ -165,7 +167,7 @@ int Game::typeStringChallenge(StringJ objective){
 			}
 		}
 
-        char input = waitForValidInput(validInputList);
+		char input = waitForValidInput(validInputList);
 		switch(input){
 			case 1: // reach typoMax
 			case 3: // <C-c> to save
@@ -186,8 +188,10 @@ int Game::typeStringChallenge(StringJ objective){
 	return 0; // success
 }
 
-void Game::setObjective(string objectiveFile){
-	objectiveFile = OBJECTIVE_FILE_PREFIX + objectiveFile;
+void Game::loadObjective(string objectiveFile){
+	objectiveList.clear();
+	objectiveFile = OBJECTIVE_FILE_PREFIX + dirSetting + "/" +objectiveFile;
+	cout << objectiveFile << endl;
 	std::ifstream ifs(objectiveFile);
 	if (ifs.fail()){
 		std::cerr << objectiveFile << " の読み込みに失敗" << std::endl;
@@ -208,19 +212,33 @@ void Game::setObjective(string objectiveFile){
 	}
 
 	cout << "文字列リスト読み込み完了" << endl;
-
 }
 
-Game::Game(RomajiTable table, string objectiveFile){
+Game::Game(RomajiTable table, string objectiveDir){
 	setTable(table);
-	setObjective(objectiveFile);
+	setObjective(objectiveDir);
 }
 
-Game::Game(string tableFile, string objectiveFile){
+Game::Game(string tableFile, string objectiveDir){
 	tableFile = TABLE_FILE_PREFIX + tableFile;
 	romajiTable.set(tableFile);
 	cout << "ローマ字テーブル読み込み完了" << endl;
-	setObjective(objectiveFile);
+	setObjective(objectiveDir);
+}
+
+void Game::setObjective(string objectiveDir){
+	dirSetting = objectiveDir;
+	DIR* dp = opendir((OBJECTIVE_FILE_PREFIX + objectiveDir).c_str());
+	if (dp!=NULL){
+		struct dirent* dent;
+		do{
+			dent = readdir(dp);
+			if (dent!=NULL && dent->d_name[0] !='.'){
+				objectiveFileList.push_back(dent->d_name);
+			} 
+		}while(dent!=NULL);
+		closedir(dp);
+	}
 }
 
 void Game::addObjective(string newObjective){
@@ -246,27 +264,31 @@ void Game::setTypoMax(int typoMax){
 
 int Game::run(){
 	cout << endl << gameTitle;
-	for(int i = 0; i < loop; i++){
-		int objectiveListSize = objectiveList.size();
-		string objective;
-		if(seqFlag){
-			loop = objectiveList.size();
-			objective = objectiveList[i];
-		}else{
-			objective = objectiveList[rand() % objectiveListSize];
-		}
+	for(auto objectiveFileName : objectiveFileList){
+		cout << "objectiveFileName " << objectiveFileName << endl;
+		loadObjective(objectiveFileName);
+		for(int i = 0; i < loop; i++){
+			int objectiveListSize = objectiveList.size();
+			string objective;
+			if(seqFlag){
+				loop = objectiveList.size();
+				objective = objectiveList[i];
+			}else{
+				objective = objectiveList[rand() % objectiveListSize];
+			}
 
-		cout << endl << i+1 << " of " << loop << endl;
-		int result = 1;
-		while(result == 1){
-			 result = typeStringChallenge(objective);
+			cout << endl << i+1 << " of " << loop << endl;
+			int result = 1;
+			while(result == 1){
+				result = typeStringChallenge(objective);
+			}
+			switch(result){
+				case 3: // <C-c> was put to save
+					return 3;
+			}
 		}
-		switch(result){
-			case 3: // <C-c> was put to save
-				return 3;
-		}
+		cout << endl << endl;
 	}
-	cout << endl << endl;
 	return 0; //success
 }
 
@@ -274,5 +296,3 @@ int Game::save(){
 	cout << "TODO: save feature has not been inplemented" << endl;
 	return 1; // save failed
 }
-
-
