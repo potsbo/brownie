@@ -4,8 +4,7 @@
 #include "cmdline.h"
 // test
 ABCDvorak::ABCDvorak(){
-/* TODO: load save data */
-//  currentPhase = 1;
+	/* TODO: load save data */
 	table.set(TABLE_FILE_PREFIX+dvorakTableName);
 };
 int ABCDvorak::run(){
@@ -42,5 +41,5 @@ void ABCDvorak::setTable(string table){
 }
 
 void ABCDvorak::setPhase(int phase){
-  this->currentPhase = phase;
+	this->currentPhase = phase;
 }

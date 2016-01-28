@@ -12,6 +12,6 @@ class ABCDvorak{
 	public:
 		ABCDvorak();
 		void setTable(string table);
-    void setPhase(int phase);
+		void setPhase(int phase);
 		int run();
 };

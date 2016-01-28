@@ -12,6 +12,9 @@ char Game::waitForValidInput(set<char> validInputList){
 			switch(input){
 				case 3:
 					return 3;
+				case 8:
+					cout << "\x1b[1C"; // move cursor to right by 1 char
+					continue;
 			}
 		}
 		for( char candidate : validInputList){
